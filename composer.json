@@ -1,0 +1,22 @@
+{
+    "name": "nelwhix/photo-sharing-phparch",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Nelwhix\\PhotoSharingPhpArch\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nelson Isioma",
+            "email": "nelsonisioma1@gmail.com"
+        }
+    ],
+    "require": {
+        "bref/bref": "^2.3",
+        "bref/logger": "^1.0",
+        "aws/aws-sdk-php": "^3.328",
+        "intervention/image": "^3.9",
+        "bref/extra-php-extensions": "^1.4"
+    }
+}

@@ -1,0 +1,45 @@
+service: app
+
+provider:
+    name: aws
+    region: eu-central-1
+    iam:
+        role:
+            statements:
+                - Effect: Allow
+                  Action: s3:GetObject
+                  Resource: 'arn:aws:s3:::photo-share-input/*'
+                - Effect: Allow
+                  Action: s3:GetObject
+                  Resource: 'arn:aws:s3:::photo-share-output/*'
+                - Effect: Allow
+                  Action: s3:PutObject
+                  Resource: 'arn:aws:s3:::photo-share-output/*'
+                - Effect: Allow
+                  Action:
+                      - rekognition:DetectLabels
+                  Resource: '*'
+    environment:
+        S3_OUTPUT_BUCKET: photo-share-output
+
+plugins:
+    - ./vendor/bref/bref
+    - ./vendor/bref/extra-php-extensions
+
+functions:
+    imageProcessor:
+        handler: handler.php
+        description: ''
+        runtime: php-83
+        layers:
+          - ${bref-extra:gd-php-83}
+        events:
+            - s3:
+                  bucket: photo-share-input
+                  existing: true
+                  event: s3:ObjectCreated:*
+
+# Exclude files from deployment
+package:
+    patterns:
+        - '!tests/**'
